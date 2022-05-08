@@ -1,0 +1,23 @@
+body { 
+    padding: 0rem; 
+    background-color: var(--light); 
+}
+.h2{
+    padding-left: 3rem;
+    padding-top: 1rem;
+}
+.row{
+    padding: 2rem;
+}
+.logo{
+    width:10rem;
+    float:right;
+}
+.nav-item{
+    margin-right: 0rem;
+}
+.btn-block:hover{
+    color: white;
+    background-color: #343a40;
+
+}
