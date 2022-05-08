@@ -21,3 +21,12 @@ body {
     background-color: #343a40;
 
 }
+
+th,td{
+    padding:0.5rem;
+
+}
+
+table{
+    margin:auto;
+}
