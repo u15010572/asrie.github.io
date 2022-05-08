@@ -1,11 +1,12 @@
 window.addEventListener("load", function () {
 
-//this.localStorage.clear();
+localStorage.clear();
 var row = document.getElementById("row");
 var modalheading = document.getElementById("exampleModalLabel");
 var modalbody = document.getElementById("modal-body");
 var Tbody = document.getElementById("tableBody");
 var totalcost = document.getElementById("totalcost");
+
 //Onload from storage
 var cartNumber = document.getElementById("cartNumber");
 if(localStorage.getItem("numberInCart")){
@@ -161,32 +162,77 @@ function addToCart(){
 if(Tbody!=null){
 displayTable();
 function displayTable(){
-if("moviesInCart" in localStorage){
-    let moviesInCart = JSON.parse(localStorage.getItem("moviesInCart"));
-   var cost =0;
-    for(i=0; i<moviesInCart.length; i++){
-    Tbody.innerHTML += '<tr><td><i class="fa fa-trash" aria-hidden="true"></i>'
-                    + moviesInCart[i].title
-                    +'</td><td>'
-                    + moviesInCart[i].ticket_price
-                    +'<td><i class="fa fa-minus" aria-hidden="true"></i>'
-                    +moviesInCart[i].tickets_in_cart
-                    +'<i class="fa fa-plus" aria-hidden="true"></i></td><td>'
-                    + (moviesInCart[i].ticket_price*moviesInCart[i].tickets_in_cart)
-                    +'</td></tr>';
-        cost += (moviesInCart[i].ticket_price*moviesInCart[i].tickets_in_cart);
+
+    Tbody.innerHTML = "";
+    if("moviesInCart" in localStorage){
+        let moviesInCart = JSON.parse(localStorage.getItem("moviesInCart"));
+    var cost =0;
+        for(i=0; i<moviesInCart.length; i++){
+        Tbody.innerHTML += '<tr><td class="deletebtn" id="'
+                        +  moviesInCart[i].id
+                        + '"><i class="fa fa-trash" aria-hidden="true"></i></td><td>'
+                        + moviesInCart[i].title
+                        +'</td><td>R'
+                        + moviesInCart[i].ticket_price
+                        +'<td><i class="fa fa-minus" aria-hidden="true"></i>'
+                        +moviesInCart[i].tickets_in_cart
+                        +'<i class="fa fa-plus" aria-hidden="true"></i></td><td>R'
+                        + (moviesInCart[i].ticket_price*moviesInCart[i].tickets_in_cart)
+                        +'</td></tr>';
+            cost += (moviesInCart[i].ticket_price*moviesInCart[i].tickets_in_cart);
+        
+            totalcost.innerHTML = 'R'+cost;
+
+        }
+        
+    }
+    else{
+        Tbody.innerHTML = '<tr><td colspan="4"> There are no movies in your cart</td></tr>';
+        totalcost.innerHTML = 'R0';
+    }
     
 
-    }
-    totalcost.innerHTML = 'R' + cost;
+    
+    
 }
 
-else{
-    Tbody.innerHTML = '<tr><td colspan="4"> There are no movies in your cart</td></tr>';
-}
+var deletebtns = document.getElementsByClassName("deletebtn");
+for(i=0; i<deletebtns.length; i++){
+    deletebtns[i].addEventListener("click", deleteMovie);
+    
 }
 
+function deleteMovie(){
+        var ID = this.getAttribute('id');
+        
 
+        let moviesInCart = JSON.parse(localStorage.getItem("moviesInCart"));
+        var deleteIndex = moviesInCart.indexOf(moviesInCart => {
+            return moviesInCart.id === ID});
+            console.log(deleteIndex);
+            
+        var subtractNum = moviesInCart[deleteIndex].tickets_in_cart;
+        var total = parseInt(localStorage.getItem("numberInCart"));
+        total =total - subtractNum;
+        localStorage.setItem("numberInCart", total);
+        cartNumber.innerHTML = total; 
+        
+        
+        moviesInCart.splice(deleteIndex, 1);
+        localStorage.setItem("moviesInCart", JSON.stringify(moviesInCart));
+        displayTable();
+
+        
+        
+ }
+
+/*function incrMovie(){
+
+}
+function decrMovie(){
+
+}
+*/
 }
 
 })
